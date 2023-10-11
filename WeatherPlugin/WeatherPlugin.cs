@@ -266,4 +266,4 @@ namespace WeatherPlugin
             return Marshal.StringToHGlobalUni(outVal);
         }
     }
-}
+}   
