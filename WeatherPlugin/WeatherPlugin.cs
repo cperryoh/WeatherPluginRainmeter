@@ -56,7 +56,7 @@ namespace WeatherPlugin
         public static void Initialize(ref IntPtr data, IntPtr rm)
         {
             data = GCHandle.ToIntPtr(GCHandle.Alloc(new Measure()));
-            Rainmeter.API api = (Rainmeter.API)rm;
+            api = (Rainmeter.API)rm;
             Measure measure = (Measure)data;
 
 
@@ -65,7 +65,7 @@ namespace WeatherPlugin
             measure.lon = api.ReadDouble("longitude", 0.0);
             measure.lat = api.ReadDouble("latitude", 0.0);
             measure.type = api.ReadString("type", "");
-            measure.units = api.ReadString("units", "");
+            measure.units = api.ReadString("units", "f");
             api.Log(API.LogType.Debug, "Skin loaded");
 
             measure.api = api;
@@ -131,7 +131,7 @@ namespace WeatherPlugin
         public static void Reload(IntPtr data, IntPtr rm, ref double maxValue)
         {
             Measure measure = (Measure)data;
-            Rainmeter.API api = (Rainmeter.API)rm;
+            api = (Rainmeter.API)rm;
             measure.apiKey = api.ReadString("key", "");
             measure.lon = api.ReadDouble("longitude", 0.0);
             measure.lat = api.ReadDouble("latitude", 0.0);
@@ -191,9 +191,14 @@ namespace WeatherPlugin
             {
                 return Math.Round(toC(val));
             }
-            else
+            else if(units.ToLower().Equals("f"))
             {
                 return Math.Round(toF(val));
+            }
+            else
+            {
+                api.Log(API.LogType.Error, "Unit choice is incorrect, please choose c for celcius and f for fahrenheit");
+                return 0;
             }
         }
         public static double toF(double val)
@@ -216,7 +221,7 @@ namespace WeatherPlugin
 
             return Marshal.StringToHGlobalUni(measure.data);
         }
-
+        static API api;
         //[DllExport]
         //public static void ExecuteBang(IntPtr data, [MarshalAs(UnmanagedType.LPWStr)]String args)
         //{
