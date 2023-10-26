@@ -96,6 +96,9 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)\API\DllExporter.exe" "$(ConfigurationName)" "$(PlatformName)" "$(TargetDir)\" "$(TargetFileName)"
-move "$(TargetDir)$(TargetFileName)" "C:\Program Files\Rainmeter\Plugins"</PostBuildEvent>
+Del "$(SolutionDir)\builds\$(TargetName)_$(PlatformName)$(TargetExt)" /q
+copy "$(TargetDir)$(TargetFileName)" /y "C:\Program Files\Rainmeter\Plugins\"
+copy "$(TargetDir)$(TargetFileName)" /y "$(SolutionDir)\builds\"
+Ren "$(SolutionDir)\builds\$(TargetFileName)" "$(TargetName)_$(PlatformName)$(TargetExt)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
